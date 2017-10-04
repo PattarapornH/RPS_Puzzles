@@ -12,7 +12,7 @@ class MyApplication(arcade.Window):
         """
         Set up the application.
         """
-        self.total_time = 0.0
+        self.total_time = 60.0
         self.timer_text = None
         arcade.set_background_color(arcade.color.WHITE)
 
@@ -44,7 +44,7 @@ class MyApplication(arcade.Window):
         """
         All the logic to move, and the game logic goes here.
         """
-        self.total_time += delta_time
+        self.total_time -= delta_time
 
 
 window = MyApplication(SCREEN_WIDTH, SCREEN_HEIGHT)
