@@ -22,23 +22,17 @@ class Red:
     def Rock(self):
         if(self.S):
             scorer.score+=10
-            return True
         else:
             scorer.score-=5
-            return False
     
     def Paper(self):
         if(self.D):
             scorer.score+=10
-            return True
         else:
             scorer.score-=5
-            return False
 
     def Scrissor(self):
         if(self.A):
             scorer.score+=10
-            return True
         else:
             scorer.score-=5
-            return False
