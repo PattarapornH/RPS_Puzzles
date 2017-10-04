@@ -12,7 +12,6 @@ class Red:
     def __init__(self):
         self.x = random.x
         self.y = random.y
-        scorer.score = 0
 
     def on_key_press(self,key,key_modifiers):
         self.A = (key == arcade.key.A)
