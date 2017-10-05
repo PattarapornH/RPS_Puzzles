@@ -1,17 +1,22 @@
-
 '''
 A rock
 S paper
 D scrissor
 '''
-from random import randint
+from rand import rand_rps
 from scorer import score
 
 import arcade.key
-class Red:
+
+class Red_against():
     def __init__(self):
-        self.x = random.x
-        self.y = random.y
+        self.x = rand_rps().x
+        self.y = rand_rps().y
+        self.A = False
+        self.S = False
+        self.D = False
+        self.W = False
+        self.sc = score()
 
     def on_key_press(self,key,key_modifiers):
         self.A = (key == arcade.key.A)
@@ -20,25 +25,25 @@ class Red:
         self.W = (key == arcade.key.W)
 
     def Rock(self):
-        if(self.D):
-            scorer.score+=10
+        if self.D:
+            self.sc.score+=10
             return True
         else:
-            scorer.score-=5
+            self.sc.score-=5
             return False
     
     def Paper(self):
         if(self.A):
-            scorer.score+=10
+            self.sc.score+=10
             return True
         else:
-            scorer.score-=5
+            self.sc.score-=5
             return False
 
-    def Scrissor(self):
+    def Scissor(self):
         if(self.S):
-            scorer.score+=10
+            self.sc.score+=10
             return True
         else:
-            scorer.score-=5
+            self.sc.score-=5
             return False
