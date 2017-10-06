@@ -3,8 +3,6 @@ import arcade
 from rand import rand_rps
 from red import Red_against
 from blue import Blue_against
-#from timer import time
-from scorer import score
 
 SCREEN_WIDTH = 400
 SCREEN_HEIGHT = 500
@@ -24,10 +22,8 @@ class gameWindow(arcade.Window):
         super().__init__(width,height)
         self.background = arcade.load_texture("images/bg1.jpg")
         self.rand = rand_rps()
-    #    self.x = 1
-    #    self.y = self.rand.y
-        self.a = Red_against()
-    #    self.sc = score()
+        self.R = Red_against()
+        self.B = Blue_against()
         self.score = 0
         self.score_text = None
      #   print(self.x)
@@ -74,19 +70,19 @@ class gameWindow(arcade.Window):
         self.y = rand_rps().y
         ##RED
         if(self.x==1):
-            self.red = Red_against().Rock()
+            self.red = self.R.Rock()
             if(self.red):
                 self.score+=10
             else:
                 self.score-=5
         elif(self.x==2):
-            self.red = Red_against().Paper()
+            self.red = self.R.Paper()
             if(self.red):
                 self.score+=10
             else:
                 self.score-=5
         elif(self.x==3):
-            self.red = Red_against().Scissor()
+            self.red = self.R.Scissor()
             if(self.red):
                 self.score+=10
             else:
@@ -94,19 +90,19 @@ class gameWindow(arcade.Window):
 
         ##BLUE
         elif(self.x==4):
-            self.blue = Blue_against().Rock()
+            self.blue = self.B.Rock()
             if(self.blue):
                 self.score+=10
             else:
                 self.score-=5
         elif(self.x==5):
-            self.blue = Blue_against().Paper()
+            self.blue = self.B.Paper()
             if(self.blue):
                 self.score+=10
             else:
                 self.score-=5       
         elif(self.x==6):
-            self.blue = Blue_against().Scissor()
+            self.blue = self.B.Scissor()
             if(self.blue):
                 self.score+=10
             else:
