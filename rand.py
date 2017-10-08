@@ -1,12 +1,8 @@
 import arcade
 from random import randint
-#from red import Red_against
-#from blue import Blue_against
 
 class rand_rps:
     def __init__(self):
-   #     self.red = Red_against()
-   #     self.blue = Blue_against()
         self.x = randint(1,7)
         self.A = False
         self.S = False
