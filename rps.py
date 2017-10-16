@@ -1,9 +1,11 @@
+
 import arcade
 import time
 
 from rand import rand_rps
 from red import Red_against
 from blue import Blue_against
+from check import check_win_lost
 
 SCREEN_WIDTH = 400
 SCREEN_HEIGHT = 500
@@ -22,21 +24,19 @@ class gameWindow(arcade.Window):
     def __init__ (self,width,height):
         super().__init__(width,height)
         self.background = arcade.load_texture("images/bg1.jpg")
-        self.rand = rand_rps()
+        #self.rand = rand_rps()
         self.R = Red_against()
         self.B = Blue_against()
-        self.x = self.rand.x
+        self.check = check_win_lost()
+        self.x = self.check.x
         self.score = 0
         self.score_text = None
      #   print(self.x)
     
     def on_draw(self):
+
         arcade.start_render()
         arcade.draw_texture_rectangle(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2, SCREEN_WIDTH, SCREEN_HEIGHT, self.background)
-        output = f"Score : {self.score}"
-        if not self.score_text or self.score_text.text != output:
-            self.score_text = arcade.create_text(output, arcade.color.BLACK, 30)
-        arcade.render_text(self.score_text,100,400)
         #### DRAW CHOICE ####
         self.rock = arcade.Sprite('images/rock.png')
         self.rock.set_position(100,100)
@@ -76,48 +76,29 @@ class gameWindow(arcade.Window):
             self.scissor_blue = arcade.Sprite('images/scissor blue.png')
             self.scissor_blue.set_position(200,300)
             self.scissor_blue.draw()
+        #### TIME ####
+        elif self.x == 7:
+            self.add_time = arcade.Sprite('images/scissor blue.png')
+            self.add_time.set_position(200,300)
+            self.add_time.draw()
 
-    def on_key_press(self,key,key_modifier):
-        self.rand.on_key_press(key,key_modifier)
-        self.R.on_key_press(key,key_modifier)
-        self.B.on_key_press(key,key_modifier)
+        output = f"Score : {self.score}"
+        if not self.score_text or self.score_text.text != output:
+            self.score_text = arcade.create_text(output, arcade.color.BLACK, 30)
+        arcade.render_text(self.score_text,100,400)
 
+    
+    
+    def on_key_press(self,key,key_modifiers):
+        #self.rand.on_key_press(key,key_modifiers)
+        self.check.on_key_press(key,key_modifiers)
+        #self.R.on_key_press(key,key_modifiers)
+        #self.B.on_key_press(key,key_modifiers)
 
     def update(self,delta):
-        #### RED ####
-        self.x = self.rand.update(delta)
-        if self.x == 1 :
-            self.red = self.R.Rock()
-            if self.red :
-                self.score+=10
-        elif self.x == 2 :
-            self.red = self.R.Paper()
-            if self.red :
-                self.score+=10
-        elif self.x == 3 :
-            self.red = self.R.Scissor()
-            if self.red :
-                self.score+=10
-
-        #### BLUE ####
-        elif self.x == 4 :
-            self.blue = self.B.Rock()
-            if self.blue :
-                self.score+=10
-        elif self.x == 5 :
-            self.blue = self.B.Paper()
-            if self.blue :
-                self.score += 10
-        elif self.x == 6 :
-            self.blue = self.B.Scissor()
-            if self.blue :
-                self.score+=10
-
-        print(self.score)
-        ##set score
-        if(self.score<0):
-            self.score = 0
-
+        self.score = self.check.update(delta)
+        self.x = self.check.x
+        
 if __name__ == '__main__':
     window = gameWindow(SCREEN_WIDTH,SCREEN_HEIGHT)
     arcade.run()
