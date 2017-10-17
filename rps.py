@@ -5,10 +5,12 @@ from check import check_win_lost
 
 SCREEN_WIDTH = 400
 SCREEN_HEIGHT = 500
+GAME_PLAYED = 1
+GAME_OVER = 2
 
 class gameWindow(arcade.Window):
     def __init__ (self,width,height):
-        super().__init__(width,height)
+        super().__init__(width,height,title = "RPS_Puzzles")
         self.background = arcade.load_texture("images/bg1.jpg")
         self.check = check_win_lost()
         self.x = self.check.x
@@ -16,40 +18,35 @@ class gameWindow(arcade.Window):
         self.score_text = None
         self.time = 60.0
         self.time_text = None
-        self.screen_state = 1  # state = 1 -> show how to play and pressed to start
-    
-    def on_draw(self):
+        self.game_state = 1
+
+    def on_draw_game(self):
         arcade.start_render()
-        '''
-        #### HOW TO PLAY ####
-        if self.screen_state == 1 :
-            arcade.set_background_color(arcade.color.WHEAT)
-            self.text1 = arcade.create_text("HOW TO PLAY", arcade.color.BLACK,30)
-            self.text2 = arcade.create_text("BLUE : Win aganist the symbol",arcade.color.BLUE,20)
-            self.text3 = arcade.create_text("RED : Lose aganist the symbol",arcade.color.RED,20)
-            self.text4 = arcade.create_text("Press A to choose ROCK",arcade.color.GREEN,15)
-            self.text5 = arcade.create_text("Press S to choose PAPER",arcade.color.GREEN,15)
-            self.text6 = arcade.create_text("Press D to choose SCISSOR",arcade.color.GREEN,15)
-            self.text7 = arcade.create_text("Press Q to start game",arcade.color.GREEN,15)
-        '''
         arcade.draw_texture_rectangle(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2, SCREEN_WIDTH, SCREEN_HEIGHT, self.background)
+
         #### DRAW CHOICE ####
         self.rock = arcade.Sprite('images/rock.png')
         self.rock.set_position(100,100)
         self.rock.draw()
+        self.text_A = arcade.create_text("A", arcade.color.BLACK,15)
+        arcade.render_text(self.text_A,100,50)
 
         self.paper = arcade.Sprite('images/paper.png')
-        self.paper.set_position(200,100)
+        self.paper.set_position(210,100)
         self.paper.draw()
-
+        self.text_S = arcade.create_text("S", arcade.color.BLACK,15)
+        arcade.render_text(self.text_S,200,50)
+        
         self.scissor = arcade.Sprite('images/scissor.png')
         self.scissor.set_position(300,100)
         self.scissor.draw()
+        self.text_D = arcade.create_text("D", arcade.color.BLACK,15)
+        arcade.render_text(self.text_D,300,50)
 
         #### RED ####
         if self.x == 1 :
             self.rock_red = arcade.Sprite('images/rock red.png')
-            self.rock_red.set_position(200,300)
+            self.rock_red.set_position(200,300)   
             self.rock_red.draw()
         elif self.x == 2 :
             self.paper_red = arcade.Sprite('images/paper red.png')
@@ -84,18 +81,33 @@ class gameWindow(arcade.Window):
         if not self.time_text or self.time_text.text != output_time :
             self.time_text = arcade.create_text(output_time, arcade.color.BLACK, 15)
         arcade.render_text(self.time_text, 10, 475)
-
-        if self.time == 0:
-            arcade.stop_render()
-   
+    
+    def on_draw_game_over(self):
+        output_game_over = "GAME OVER"
+        arcade.draw_text(output_game_over, 100, 400, arcade.color.RED_DEVIL, 30)
+        output_restart = "Press W to restart"
+        arcade.draw_text(output_restart, 80,175, arcade.color.RED_DEVIL, 25)
+    
     def on_key_press(self,key,key_modifiers):
         self.check.on_key_press(key,key_modifiers)
-
+    
+    def on_draw(self):
+        if self.game_state == GAME_PLAYED :
+            self.on_draw_game()
+        
+        elif self.game_state == GAME_OVER :
+            self.on_draw_game_over()
+            if self.check.back_to_game_played :
+                print("GAME OVER")
+                self.time = 60.0
+                self.game_state = 1
+            
     def update(self,delta):
         self.score = self.check.update(delta)
         self.x = self.check.x
-        #print(type(delta))
         self.time -= delta
+        if round(self.time) == -1 :
+            self.game_state = 2
         
 if __name__ == '__main__':
     window = gameWindow(SCREEN_WIDTH,SCREEN_HEIGHT)
