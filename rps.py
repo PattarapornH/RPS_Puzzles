@@ -16,7 +16,7 @@ class gameWindow(arcade.Window):
         self.x = self.check.x
         self.score = 0
         self.score_text = None
-        self.time = 60.0
+        self.time = 20.0
         self.time_text = None
         self.game_state = 1
 
@@ -99,7 +99,7 @@ class gameWindow(arcade.Window):
             self.on_draw_game_over()
             if self.check.back_to_game_played :
                 print("GAME OVER")
-                self.time = 60.0
+                self.time = 20.0
                 self.game_state = 1
             
     def update(self,delta):
