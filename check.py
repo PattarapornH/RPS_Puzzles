@@ -23,6 +23,10 @@ class check_win_lost :
         self.is_D_pressed = False
         self.is_W_pressed = False
         self.score = 0
+
+        #### SOUND ####
+        self.sound_correct = arcade.sound.load_sound('sound/correct.mp3')
+        self.sound_wrong = arcade.sound.load_sound('sound/wrong.mp3')
       
     def on_key_press(self,key,key_modifiers):
         if key == arcade.key.A:
@@ -40,7 +44,7 @@ class check_win_lost :
         
     def update(self,delta):
         x = self.x
-        self.is_change_question = self.is_A_pressed or self.is_S_pressed or self.is_D_pressed or self.is_W_pressed
+        self.is_change_question = self.is_A_pressed or self.is_S_pressed or self.is_D_pressed
         self.back_to_game_played = self.is_W_pressed
         #### RED ####
         if x == ROCK_RED : 
@@ -48,47 +52,59 @@ class check_win_lost :
                 #print("D PRESSED: red rock")
                 self.score += 10
                 self.is_D_pressed = False
+                arcade.sound.play_sound(self.sound_correct)
             elif self.is_change_question:
                 self.score -= 7
+                arcade.sound.play_sound(self.sound_wrong)
         elif x == PAPER_RED :
             if self.is_A_pressed:
                 #print("A PRESSED: red paper")
                 self.score +=10
                 self.is_A_pressed = False
+                arcade.sound.play_sound(self.sound_correct)
             elif self.is_change_question:
                 self.score -= 7
+                arcade.sound.play_sound(self.sound_wrong)
         elif x == SCISSOR_RED :
             if self.is_S_pressed:
                 #print("S PRESSED: red scissor")
                 self.score +=10
                 self.is_S_pressed = False
+                arcade.sound.play_sound(self.sound_correct)
             elif self.is_change_question:
                 self.score -= 7
+                arcade.sound.play_sound(self.sound_wrong)
         #### BLUE ####
         elif x == ROCK_BLUE : 
             if self.is_S_pressed:
                 #print("S PRESSED: blue rock")
                 self.score +=10
                 self.is_S_pressed = False
+                arcade.sound.play_sound(self.sound_correct)
             elif self.is_change_question:
                 self.score -= 7
+                arcade.sound.play_sound(self.sound_wrong)
         elif x == PAPER_BLUE :
             if self.is_D_pressed:
                 #print("D PRESSED: blue paper")
                 self.score +=10
                 self.is_D_pressed = False
+                arcade.sound.play_sound(self.sound_correct)
             elif self.is_change_question:
                 self.score -= 7
+                arcade.sound.play_sound(self.sound_wrong)
         elif x == SCISSOR_BLUE :
             if self.is_A_pressed:
                 #print("A PRESSED: blue scissor")
                 self.score +=10
                 self.is_A_pressed = False
+                arcade.sound.play_sound(self.sound_correct)
             elif self.is_change_question:
                 self.score -= 7
+                arcade.sound.play_sound(self.sound_wrong)
         
         #### SET SCORE OR GAME OVER####
-        if self.score < 0 or self.is_W_pressed:
+        if self.score < 0 or self.back_to_game_played:
             self.score = 0
 
         if self.is_change_question:
@@ -98,5 +114,5 @@ class check_win_lost :
             self.is_D_pressed = False
             self.is_S_pressed = False
             self.is_W_pressed = False
-
+        
         return self.score
