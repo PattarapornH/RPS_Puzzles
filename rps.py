@@ -93,16 +93,14 @@ class gameWindow(arcade.Window):
     
     def on_draw_game_over(self):
         arcade.draw_texture_rectangle(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2, SCREEN_WIDTH, SCREEN_HEIGHT, self.background)
-        output_game_over = "GAME OVER"
-        arcade.draw_text(output_game_over, 70, 400, arcade.color.BLACK, 40)
+        arcade.draw_text("GAME OVER", 70, 400, arcade.color.BLACK, 40)
         output_last_score = f"Score : {round(self.score)}"
         arcade.draw_text(output_last_score,120,280,arcade.color.BLUE_VIOLET,25)
-        output_restart = "Press W to restart"
-        arcade.draw_text(output_restart, 80,175, arcade.color.BLUE_SAPPHIRE, 25)
+        arcade.draw_text("Press W to restart", 80,175, arcade.color.BLUE_SAPPHIRE, 25)
         self.rock.draw()
         self.paper.draw()
         self.scissor.draw()
-    
+        
     def on_key_press(self,key,key_modifiers):
         self.check.on_key_press(key,key_modifiers)
     
@@ -110,7 +108,6 @@ class gameWindow(arcade.Window):
         arcade.start_render()
         if self.game_state == GAME_PLAYED :
             self.on_draw_game()
-        
         elif self.game_state == GAME_OVER :
             self.on_draw_game_over()
             if self.check.back_to_game_played :
@@ -122,7 +119,7 @@ class gameWindow(arcade.Window):
         self.score = self.check.update(delta)
         self.x = self.check.x
         self.time -= delta
-        if round(self.time) == -1 :
+        if round(self.time) == 0 :
             self.game_state = 2
         
 if __name__ == '__main__':
